@@ -25,15 +25,15 @@ const getCategories = asyncHandler(async (req, res) => {
 
 const createCategory = asyncHandler(async (req, res) => {
   try {
-    // get title from request body
+    // lấy tiêu đề từ nội dung yêu cầu
     const { title } = req.body;
-    // create new category
+    // Yaoj mới category
     const category = new Categories({
       title,
     });
-    // save the category in database
+    // Lưu category trong  database
     const createdCategory = await category.save();
-    // send the new category to the client
+    // Gửi category mới đến client
     res.status(201).json(createdCategory);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -46,15 +46,15 @@ const createCategory = asyncHandler(async (req, res) => {
 
 const updateCategory = asyncHandler(async (req, res) => {
   try {
-    // get category id from request params
+    // lấy id category từ thông số yêu cầu
     const category = await Categories.findById(req.params.id);
 
     if (category) {
-      // update category title
+      // update tiêu đề category 
       category.title = req.body.title || category.title;
-      // save the updated category in database
+      // Lưu updated category trong database
       const updatedCategory = await category.save();
-      // send the updated category to the client
+      // Gửi updated category đến client
       res.json(updatedCategory);
     } else {
       res.status(404).json({ message: "Category not found" });
@@ -70,13 +70,13 @@ const updateCategory = asyncHandler(async (req, res) => {
 
 const deleteCategory = asyncHandler(async (req, res) => {
   try {
-    // get category id from request params
+    // lấy id category từ thông số yêu cầu
     const category = await Categories.findById(req.params.id);
 
     if (category) {
-      // delete the category from database
+      // Xóa category từ database
       await category.remove();
-      // send success message to the client
+      // Gửi tin nhắn "Thành công" đến client
       res.json({ message: "Category removed" });
     } else {
       res.status(404).json({ message: "Category not found" });

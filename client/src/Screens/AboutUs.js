@@ -54,7 +54,7 @@ function AboutUs() {
               </div>
             </div>
             <img
-              src="/images/about2.jpg"
+              src="/images/about2.png"
               alt="aboutus"
               className="w-full xl:block hidden h-header rounded-lg object-cover"
             />

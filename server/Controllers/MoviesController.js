@@ -8,9 +8,9 @@ import asyncHandler from "express-async-handler";
 // @access  Public
  
 const importMovies = asyncHandler(async (req, res) => {
-  // first we make sure our Movies table is empty by delete all documents
+  // trước tiên, đảm bảo bảng Phim trống bằng cách xóa tất cả tài liệu
   await Movie.deleteMany({});
-  // then we insert all movies from MoviesData
+  // sau đó chèn tất cả phim từ MoviesData
   const movies = await Movie.insertMany(MoviesData);
   res.status(201).json(movies);
 });
@@ -21,7 +21,7 @@ const importMovies = asyncHandler(async (req, res) => {
 
 const getMovies = asyncHandler(async (req, res) => {
   try {
-    // filter movies by category, time, language, rate, year and search
+    // lọc phim theo thể loại, thời gian, ngôn ngữ, tỷ lệ, năm và tìm kiếm
     const { category, time, language, rate, year, search } = req.query;
     let query = {
       ...(category && { category }),
@@ -32,26 +32,26 @@ const getMovies = asyncHandler(async (req, res) => {
       ...(search && { name: { $regex: search, $options: "i" } }),
     };
 
-    // load more movies functionality
-    const page = Number(req.query.pageNumber) || 1; // if pageNumber is not provided in query we set it to 1
-    const limit = 10; // 10 movies per page
-    const skip = (page - 1) * limit; // skip 2 movies per page
+    //tải thêm chức năng phim
+    const page = Number(req.query.pageNumber) || 1; // nếu pageNumber không được cung cấp trong truy vấn,đặt nó thành 1
+    const limit = 10; //Giới hạn 10 phim mỗi trang
+    const skip = (page - 1) * limit; // bỏ qua 2 phim mỗi trang
 
-    // find movies by query, skip and limit
+    // tìm phim theo truy vấn, bỏ qua và giới hạn
     const movies = await Movie.find(query)
       // .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    // get total number of movies
+    // lấy tổng số phim
     const count = await Movie.countDocuments(query);
 
-    // send response with movies and total number of movies
+    // gửi phản hồi kèm theo phim và tổng số phim
     res.json({
       movies,
       page,
-      pages: Math.ceil(count / limit), // total number of pages
-      totalMovies: count, // total number of movies
+      pages: Math.ceil(count / limit), // tổng số trang
+      totalMovies: count, //tổng số phim
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -64,13 +64,13 @@ const getMovies = asyncHandler(async (req, res) => {
 
 const getMovieById = asyncHandler(async (req, res) => {
   try {
-    // find movie by id in database
+    // tìm phim theo id trong cơ sở dữ liệu
     const movie = await Movie.findById(req.params.id);
-    // if the movie if found send it to the client
+    // nếu tìm thấy phim hãy gửi nó cho client
     if (movie) {
       res.json(movie);
     }
-    // if the movie is not found send 404 error
+    // nếu không tìm thấy phim gửi lỗi 404
     else {
       res.status(404);
       throw new Error("Movie not found");
@@ -86,9 +86,9 @@ const getMovieById = asyncHandler(async (req, res) => {
 
 const getTopRatedMovies = asyncHandler(async (req, res) => {
   try {
-    // find top rated movies
+    // tìm phim được đánh giá cao nhất
     const movies = await Movie.find({}).sort({ rate: -1 });
-    // send top rated movies to the client
+    // gửi những bộ phim được đánh giá cao nhất cho client
     res.json(movies);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -101,9 +101,9 @@ const getTopRatedMovies = asyncHandler(async (req, res) => {
 
 const getRandomMovies = asyncHandler(async (req, res) => {
   try {
-    // find random movies
+    // tìm phim ngẫu nhiên
     const movies = await Movie.aggregate([{ $sample: { size: 8 } }]);
-    // send random movies to the client
+    // gửi phim ngẫu nhiên tới client
     res.json(movies);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -119,20 +119,20 @@ const getRandomMovies = asyncHandler(async (req, res) => {
 const createMovieReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
   try {
-    // find movie by id in database
+    // tìm phim theo id trongdatabase
     const movie = await Movie.findById(req.params.id);
 
     if (movie) {
-      // check if the user already reviewed this movie
+      // kiểm tra xem người dùng đã xem lại phim này chưa
       const alreadyReviewed = movie.reviews.find(
         (r) => r.userId.toString() === req.user._id.toString()
       );
-      // if the user already reviewed this movie send 400 error
+      // nếu người dùng đã xem lại phim này sẽ gửi lỗi 400
       if (alreadyReviewed) {
         res.status(400);
         throw new Error("You already reviewed this movie");
       }
-      // else create a new review
+      // nếu không hãy tạo một đánh giá mới
       const review = {
         userName: req.user.fullName,
         userId: req.user._id,
@@ -140,19 +140,19 @@ const createMovieReview = asyncHandler(async (req, res) => {
         rating: Number(rating),
         comment,
       };
-      // push the new review to the reviews array
+      // đẩy đánh giá mới vào mảng đánh giá
       movie.reviews.push(review);
-      // increment the number of reviews
+      // tăng số lượng đánh giá
       movie.numberOfReviews = movie.reviews.length;
 
-      // calculate the new rate
+      // tính toán tỷ lệ mới
       movie.rate =
         movie.reviews.reduce((acc, item) => item.rating + acc, 0) /
         movie.reviews.length;
 
-      // save the movie in database
+      // Lưu phim trong database
       await movie.save();
-      // send the new movie to the client
+      // Gửi movie mới đến client
       res.status(201).json({
         message: "Review added",
       });
@@ -173,7 +173,7 @@ const createMovieReview = asyncHandler(async (req, res) => {
 
 const updateMovie = asyncHandler(async (req, res) => {
   try {
-    // get data from request body
+    // lấy dữ liệu từ cơ thể yêu cầu
     const {
       name,
       desc,
@@ -189,7 +189,7 @@ const updateMovie = asyncHandler(async (req, res) => {
       casts,
     } = req.body;
 
-    // find movie by id in database
+    // tìm phim theo id trong cơ sở dữ liệu
     const movie = await Movie.findById(req.params.id);
 
     if (movie) {
@@ -210,7 +210,7 @@ const updateMovie = asyncHandler(async (req, res) => {
       // save the movie in database
 
       const updatedMovie = await movie.save();
-      // send the updated movie to the client
+      // gửi phim cập nhật tới client
       res.status(201).json(updatedMovie);
     } else {
       res.status(404);
@@ -227,14 +227,14 @@ const updateMovie = asyncHandler(async (req, res) => {
 
 const deleteMovie = asyncHandler(async (req, res) => {
   try {
-    // find movie by id in database
+    // tìm phim theo id trong cơ sở dữ liệu
     const movie = await Movie.findById(req.params.id);
-    // if the movie is found delete it
+    // nếu tìm thấy phim hãy xóa nó đi
     if (movie) {
       await movie.remove();
       res.json({ message: "Movie removed" });
     }
-    // if the movie is not found send 404 error
+    // không tìm thấy phim gửi lỗi 404
     else {
       res.status(404);
       throw new Error("Movie not found");

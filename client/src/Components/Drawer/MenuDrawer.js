@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { BsCollectionPlay } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiPhoneCall } from "react-icons/bi";
-import { FaFacebook, FaMedium, FaTelegram, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaMedium, FaTable, FaTelegram, FaTiktok, FaYoutube } from "react-icons/fa";
  
 function MenuDrawer({ drawerOpen, toggleDrawer }) {
   const active = "bg-dry text-subMain";
@@ -36,19 +36,19 @@ function MenuDrawer({ drawerOpen, toggleDrawer }) {
   const LinkDatas = [
     {
       icon: FaFacebook,
-      link: "https://www.facebook.com/zpunet",
+      link: "https://www.facebook.com/profile.php?id=100030656855105&mibextid=PlNXYD",
     },
     {
       icon: FaMedium,
-      link: "https://medium.com/@irenemmassyy",
+      link: "https://www.instagram.com/baoanhkhbeoo?igsh=MTM2bnE0MWVvamx5YQ==",
     },
     {
       icon: FaTelegram,
-      link: "https://t.me/zpunet",
+      link: "https://www.instagram.com/bao.thiy?igsh=MW5ncTRnamJjZ2hhMg==",
     },
     {
-      icon: FaYoutube,
-      link: "https://www.youtube.com/channel/UCOYwYO-LEsrjqBs6xXSfq1w",
+      icon: FaTiktok,
+      link: "https://www.tiktok.com/@baoanhkhbeoo?_t=8lqyjcQN0F8&_r=1",
     },
   ];
 
