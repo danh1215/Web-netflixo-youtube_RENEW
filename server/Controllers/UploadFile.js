@@ -7,7 +7,7 @@ import storage from "../config/firebaseStorage.js";
 const Uploadrouter = express.Router();
 
 const upload = multer({
-  storage: multer.memoryStorage(), 
+  storage: multer.memoryStorage(),
 });
 
 Uploadrouter.post("/", upload.single("file"), async (req, res) => {

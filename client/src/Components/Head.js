@@ -4,7 +4,7 @@ function Head({ title }) {
   return (
     <div className="w-full bg-deepGray lg:h-64 h-40 relative overflow-hidden rounded-md">
       <img
-        src="/images/head.png"
+        src="/images/aboutusposter.jpg"
         alt="aboutus"
         className="w-full h-full object-cover"
       />
@@ -15,6 +15,6 @@ function Head({ title }) {
       </div>
     </div>
   );
-} 
+}
 
 export default Head;

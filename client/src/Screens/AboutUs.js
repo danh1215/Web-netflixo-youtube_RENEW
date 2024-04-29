@@ -3,7 +3,7 @@ import Head from '../Components/Head';
 import Layout from './../Layout/Layout';
 
 function AboutUs() {
-  return ( 
+  return (
     <Layout>
       <div className="min-height-screen container mx-auto px-2 my-6">
         <Head title="About Us" />
@@ -54,7 +54,7 @@ function AboutUs() {
               </div>
             </div>
             <img
-              src="/images/about2.png"
+              src="/images/aboutus.jpg"
               alt="aboutus"
               className="w-full xl:block hidden h-header rounded-lg object-cover"
             />
