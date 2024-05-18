@@ -109,7 +109,7 @@ function Footer() {
               <br />
               <span>Tell: 0905368088 </span>
               <br />
-              <span>Email: Baoanhle363@gmail.com</span>
+              <span>Email: Hutech@gmail.com</span>
             </p>
           </div>
         </div>

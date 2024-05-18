@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Titles from "./../Titles";
-import { 
+import {
   BsBookmarkStarFill,
   BsCaretLeftFill,
   BsCaretRightFill,

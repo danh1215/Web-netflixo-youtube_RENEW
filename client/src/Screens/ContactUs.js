@@ -10,7 +10,7 @@ function ContactUs() {
       title: 'Email Us',
       info: '',
       icon: FiMail,
-      contact: 'Baoanhle363@gmail.com',
+      contact: 'Hutech@gmail.com',
     },
     {
       id: 2,
